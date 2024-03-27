@@ -8,7 +8,7 @@
     <string name="action_settings">Settings</string>
 
     <string name="menu_home">Home</string>
-    <string name="menu_gallery">Gallery</string>
+
     <string name="menu_slideshow">Slideshow</string>
     <string name="login">Login</string>
     <string name="register">Register</string>
@@ -24,4 +24,6 @@
     <string name="register_here">Register Here</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="progress_picture_library">Progress Picture Library</string>
+    <string name="about">About</string>
 </resources>

@@ -15,6 +15,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import com.example.fit5.databinding.ActivityMainBinding
 import com.example.fit5.ui.About.AboutFragment
+import com.example.fit5.ui.gallery.GalleryFragment
 import com.example.fit5.ui.home.HomeFragment
 
 class MainActivity : AppCompatActivity() {
@@ -58,7 +59,7 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
              R.id.nav_home->{
-                 // When navigating to the HomeFragment
+                 //  navigate to  HomeFragment
                  val fragment = HomeFragment()
                  supportFragmentManager.beginTransaction()
                      .replace(R.id.nav_host_fragment_content_main, fragment)
@@ -66,6 +67,15 @@ class MainActivity : AppCompatActivity() {
                      .commit()
                  true
              }
+                R.id.nav_gallery->{
+                    //  navigate to Gallery
+                    val fragment = GalleryFragment()
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.nav_host_fragment_content_main, fragment)
+                        .addToBackStack(null)
+                        .commit()
+                    true
+                }
 
 
 

@@ -14,7 +14,7 @@
         <item
             android:id="@+id/nav_gallery"
             android:icon="@drawable/ic_menu_gallery"
-            android:title="@string/menu_gallery" />
+            android:title="@string/progress_picture_library" />
         <item
             android:id="@+id/nav_slideshow"
             android:icon="@drawable/ic_menu_slideshow"
@@ -22,7 +22,7 @@
         <item
             android:id="@+id/nav_about"
             android:icon="@drawable/abouticon"
-            android:title="About" />
+            android:title="@string/about" />
 
     </group>
 </menu>
