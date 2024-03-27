@@ -3,9 +3,14 @@ package com.example.fit5
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.telephony.ims.RegistrationManager
+import android.util.Log
+import android.view.Menu
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
+import com.google.android.material.navigation.NavigationView
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 
@@ -15,8 +20,11 @@ class Login : AppCompatActivity() {
     lateinit var btnLogin: Button
     lateinit var edEmailLogin:EditText
     lateinit var  edPasswordLogin: EditText
+
     //firebase
     private lateinit var auth : FirebaseAuth
+    private var isLoggedIn = false
+
 
 
 
@@ -29,6 +37,7 @@ class Login : AppCompatActivity() {
         btnLogin = findViewById(R.id.btnLogin)
         edEmailLogin = findViewById(R.id.edEmailLogin)
         edPasswordLogin = findViewById(R.id.edPasswordLogin)
+
 
 
         //if user doesnt have an account
@@ -57,20 +66,31 @@ class Login : AppCompatActivity() {
         }
 
     }
-    //user login
+
+
+
+
+
+
+
+    // User login
     fun loginUser(email:String, password:String){
         auth.signInWithEmailAndPassword(email,password)
-            .addOnCompleteListener(this) {
-                    task ->
+            .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful){
                     Toast.makeText(this, "Welcome Back", Toast.LENGTH_SHORT).show()
+
+                    //navigate to home page
                     val intent = Intent(this@Login, MainActivity::class.java)
                     startActivity(intent)
-                }else{
+
+                } else {
                     Toast.makeText(this, "username or password incorrect 💀", Toast.LENGTH_SHORT).show()
                 }
-                }
+            }
+    }
 
-        }
+
+
 
 }

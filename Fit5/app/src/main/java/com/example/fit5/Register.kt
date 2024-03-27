@@ -10,6 +10,7 @@ import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 
 class Register : AppCompatActivity() {
+
     //variables
      private lateinit var toLoginBtn: Button
     private lateinit var edEmail: EditText
@@ -17,6 +18,9 @@ class Register : AppCompatActivity() {
     private   lateinit var edConfirmPassword: EditText
     private  lateinit var  mAuth: FirebaseAuth
     private lateinit var Registerbtn : Button
+
+    //interface to call back to login when a user registers
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,6 +45,8 @@ class Register : AppCompatActivity() {
             val intent = Intent(this@Register, MainActivity::class.java)
             startActivity(intent)
         }
+
+
 
 
 
@@ -102,6 +108,8 @@ class Register : AppCompatActivity() {
                     if (task.isSuccessful) {
                         // Registration success
                         Toast.makeText(this, "Registration successful", Toast.LENGTH_SHORT).show()
+                        val intent = Intent(this@Register, Login::class.java)
+                        startActivity(intent)
 
                     } else {
                         // Registration fail

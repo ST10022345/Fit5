@@ -47,16 +47,7 @@ class MainActivity : AppCompatActivity() {
         //use the nav view to navigate between screens
         binding.navView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
-                R.id.nav_Register -> {
-                    //go to Register Screen
-                    val intent = Intent(this@MainActivity, Register::class.java)
-                    startActivity(intent)
-                    true}
-                R.id.nav_Login -> {
-                    //go to Login
-                    val intent = Intent(this@MainActivity, Login::class.java)
-                    startActivity(intent)
-                    true}
+
                 R.id.nav_about -> {
                     // Navigate to AboutFragment
                     val fragment = AboutFragment()

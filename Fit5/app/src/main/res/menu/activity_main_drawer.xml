@@ -4,20 +4,12 @@
     tools:showIn="navigation_view">
 
     <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/nav_Login"
-            android:icon="@drawable/loginicon"
-            android:title="@string/login" />
 
-
-        <item
-            android:id="@+id/nav_Register"
-            android:icon="@drawable/baseline_register"
-            android:title="@string/register" />
         <item
             android:id="@+id/nav_home"
             android:icon="@drawable/baseline_home_24"
-            android:title="@string/menu_home" />
+            android:title="@string/menu_home"
+            />
 
         <item
             android:id="@+id/nav_gallery"
