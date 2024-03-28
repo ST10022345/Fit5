@@ -17,8 +17,8 @@
             android:title="@string/progress_picture_library" />
         <item
             android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="@string/coming_soon" />
+            android:icon="@drawable/baseline_account_24"
+            android:title="My Account" />
         <item
             android:id="@+id/nav_about"
             android:icon="@drawable/abouticon"

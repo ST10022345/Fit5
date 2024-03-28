@@ -1,5 +1,6 @@
 package com.example.fit5.ui.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,7 +10,9 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.example.fit5.MainActivity
 import com.example.fit5.databinding.FragmentHomeBinding
+import com.example.fit5.ui.exerciseViews.ChestExerciseView
 
 class HomeFragment : Fragment() {
 //variables
@@ -45,7 +48,9 @@ class HomeFragment : Fragment() {
         }
         //onclick for chest button
         chestBtn.setOnClickListener {
-            Toast.makeText(requireContext(), "you are trying to start a chest workout", Toast.LENGTH_SHORT).show()
+            //navigate to chest exercise page
+            val intent = Intent(requireActivity(), ChestExerciseView::class.java)
+            startActivity(intent)
         }
 
         //onclick for back button

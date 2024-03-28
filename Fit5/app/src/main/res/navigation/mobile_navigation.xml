@@ -14,14 +14,10 @@
     <fragment
         android:id="@+id/nav_gallery"
         android:name="com.example.fit5.ui.gallery.GalleryFragment"
-        android:label="@string/menu_gallery"
+        android:label="@string/progress_picture_library"
         tools:layout="@layout/fragment_gallery" />
 
-    <fragment
-        android:id="@+id/nav_slideshow"
-        android:name="com.example.fit5.ui.slideshow.SlideshowFragment"
-        android:label="@string/menu_slideshow"
-        tools:layout="@layout/fragment_slideshow" />
+
 
     <fragment
         android:id="@+id/nav_about"
