@@ -5,10 +5,12 @@ import android.os.Bundle
 import android.os.CountDownTimer
 import android.view.View
 import android.widget.Toast
-import com.example.fit5.R
+import com.example.fit5.databinding.ActivityChestExerciseViewBinding
+
+
 
 class ChestExerciseView : AppCompatActivity() {
-    private var binding: ChestExerciseView? = null
+    private var binding: ActivityChestExerciseViewBinding? = null
     private var restTimer: CountDownTimer? = null
     private var restProgress = 0
 
@@ -20,17 +22,17 @@ class ChestExerciseView : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ChestExerciseView.inflate(layoutInflater)
+        binding = ActivityChestExerciseViewBinding.inflate(layoutInflater)
         setContentView(binding?.root)
 
         setSupportActionBar(binding?.toolBarExercise)
 
-//back btn
+        //back btn
         if (supportActionBar!= null){
             supportActionBar?.setDisplayHomeAsUpEnabled(true)
         }
 
-        exerciseList = Constants.defaultExerciseList()
+        exerciseList = Constants.defaultExerciseListChest()
         binding?.toolBarExercise?.setNavigationOnClickListener {
             onBackPressed()
         }
@@ -106,7 +108,6 @@ class ChestExerciseView : AppCompatActivity() {
             }
         }.start()
     }
-
 
     override fun onDestroy() {
         super.onDestroy()
