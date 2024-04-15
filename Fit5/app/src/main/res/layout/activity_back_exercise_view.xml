@@ -4,12 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.exerciseViews.ChestExerciseView"
-    android:background="@drawable/yetanotherbg"
-    >
+    tools:context=".ui.exerciseViews.BackExerciseView"
+    android:background="@drawable/yetanotherbg">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolBarExercise"
+        android:id="@+id/toolBarExerciseBack"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_width="match_parent"
         android:theme="@style/ToolbarTheme"
@@ -25,7 +24,7 @@
     </androidx.appcompat.widget.Toolbar>
 
     <TextView
-        android:id="@+id/tvTitle"
+        android:id="@+id/tvTitleBack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="GET READY FOR"
@@ -50,10 +49,10 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolBarExercise">
+        app:layout_constraintTop_toBottomOf="@+id/toolBarExerciseBack">
 
         <ProgressBar
-            android:id="@+id/progressBar"
+            android:id="@+id/progressBarBack"
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="100dp"
             android:layout_height="100dp"
@@ -74,7 +73,7 @@
             android:background="@drawable/item_circular_color_accent_background">
 
             <TextView
-                android:id="@+id/tvTimer"
+                android:id="@+id/tvTimerBack"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -91,7 +90,7 @@
     </FrameLayout>
 
     <FrameLayout
-        android:id="@+id/flExercise"
+        android:id="@+id/flExerciseBack"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_marginTop="10dp"
@@ -102,10 +101,10 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvExercise">
+        app:layout_constraintTop_toBottomOf="@id/tvExerciseBack">
 
         <ProgressBar
-            android:id="@+id/progressBarExercise"
+            android:id="@+id/progressBarExerciseBack"
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="100dp"
             android:layout_height="100dp"
@@ -126,7 +125,7 @@
             android:background="@drawable/item_circular_color_accent_background">
 
             <TextView
-                android:id="@+id/tvTimerExercise"
+                android:id="@+id/tvTimerExerciseBack"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -143,18 +142,18 @@
 
 
     <ImageView
-        android:id="@+id/ivImage"
+        android:id="@+id/ivImageBack"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:scaleType="fitXY"
         android:padding="10dp"
         android:src="@drawable/chest1"
         android:visibility="invisible"
-        app:layout_constraintBottom_toTopOf="@id/tvExercise"
-        app:layout_constraintBottom_toBottomOf="@id/toolBarExercise"/>
+        app:layout_constraintBottom_toTopOf="@id/tvExerciseBack"
+        app:layout_constraintBottom_toBottomOf="@id/toolBarExerciseBack"/>
 
     <TextView
-        android:id="@+id/tvExercise"
+        android:id="@+id/tvExerciseBack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/Accent"
@@ -164,13 +163,7 @@
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="@id/ivImage"
+        app:layout_constraintBottom_toBottomOf="@id/ivImageBack"
 
         />
-
-
-
-
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

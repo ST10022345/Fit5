@@ -15,6 +15,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import com.example.fit5.databinding.ActivityMainBinding
 import com.example.fit5.ui.About.AboutFragment
+import com.example.fit5.ui.exerciseViews.BackExerciseView
 import com.example.fit5.ui.gallery.GalleryFragment
 import com.example.fit5.ui.home.HomeFragment
 
@@ -39,7 +40,7 @@ class MainActivity : AppCompatActivity() {
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_home, R.id.nav_gallery,R.id.nav_about
+                R.id.nav_home, R.id.nav_gallery,R.id.nav_about,R.id.nav_CustomWorkout
             ), drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
@@ -76,6 +77,12 @@ class MainActivity : AppCompatActivity() {
                         .commit()
                     true
                 }
+                R.id.nav_CustomWorkout->{
+                    val intent = Intent(this, CustomRoutine::class.java)
+                    startActivity(intent)
+                    true
+                }
+
 
 
 

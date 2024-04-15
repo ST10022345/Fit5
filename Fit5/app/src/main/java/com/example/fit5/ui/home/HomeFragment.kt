@@ -12,6 +12,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.fit5.MainActivity
 import com.example.fit5.databinding.FragmentHomeBinding
+import com.example.fit5.ui.exerciseViews.BackExerciseView
+import com.example.fit5.ui.exerciseViews.CardioExerciseView
 import com.example.fit5.ui.exerciseViews.ChestExerciseView
 
 class HomeFragment : Fragment() {
@@ -42,9 +44,12 @@ class HomeFragment : Fragment() {
         chestBtn = binding.ChestBtn
         backBtn = binding.BackBtn
 
+
         //onclick for cardio button
         cardioBtn.setOnClickListener {
-            Toast.makeText(requireContext(), "You are trying to start a cardio workout", Toast.LENGTH_SHORT).show()
+            //navigate to chest exercise page
+            val intent = Intent(requireActivity(), CardioExerciseView::class.java)
+            startActivity(intent)
         }
         //onclick for chest button
         chestBtn.setOnClickListener {
@@ -55,7 +60,8 @@ class HomeFragment : Fragment() {
 
         //onclick for back button
         backBtn.setOnClickListener {
-            Toast.makeText(requireContext(), "you are trying to do a back workout", Toast.LENGTH_SHORT).show()
+            val intent = Intent(requireActivity(), BackExerciseView::class.java)
+            startActivity(intent)
         }
 
         return root
