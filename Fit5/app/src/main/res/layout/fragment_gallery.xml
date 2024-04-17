@@ -10,18 +10,43 @@
 
     <Button
         android:id="@+id/AddImagebtn"
-        android:layout_width="139dp"
-        android:layout_height="117dp"
-        android:text="+"
-        android:textSize="70sp"
-        android:textColor="@color/Accent"
+        android:layout_width="128dp"
+        android:layout_height="110dp"
         android:background="@color/white"
+        android:text="+"
+        android:textColor="@color/Accent"
+        android:textSize="70sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.024"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.025" />
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="128dp"
+        android:layout_height="110dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.025"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="128dp"
+        android:layout_height="110dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/imageView1"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.025"
+        tools:srcCompat="@tools:sample/avatars" />
+
 
 
 

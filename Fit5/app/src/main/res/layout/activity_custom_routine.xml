@@ -4,6 +4,168 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CustomRoutine">
+    tools:context=".CustomRoutine"
+    android:background="@drawable/yetanotherbg">
+
+    <TextView
+        android:id="@+id/tvCustom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Custom Routine"
+        android:textSize="25sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.435"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.022"
+        tools:ignore="HardcodedText" />
+
+    <EditText
+        android:id="@+id/editTextText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="text"
+        android:minHeight="48dp"
+        android:hint="Exercise name"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.452"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvCustom"
+        app:layout_constraintVertical_bias="0.037"
+        tools:ignore="Autofill" />
+
+    <EditText
+        android:id="@+id/editTextText2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint=" Routine description"
+        android:inputType="text"
+        android:minHeight="48dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.452"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextText"
+        app:layout_constraintVertical_bias="0.029"
+        tools:ignore="Autofill,TextContrastCheck" />
+
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="273dp"
+        android:layout_height="wrap_content"
+        android:entries="@array/spinner_items"
+        android:minHeight="48dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.27" />
+
+    <Button
+        android:id="@+id/btnStartDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="88dp"
+        android:layout_marginTop="75dp"
+        android:background="@drawable/custom_button"
+        android:onClick="showDate"
+        android:text="start date"
+        android:textColor="#feecea"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinner"
+        app:layout_constraintVertical_bias="0.018" />
+
+    <Button
+        android:id="@+id/btnstartTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="75dp"
+        android:background="@drawable/custom_button"
+        android:onClick="showTimePicker"
+        android:text="start time"
+        android:textColor="#feecea"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.374"
+        app:layout_constraintStart_toEndOf="@+id/btnStartDate"
+        app:layout_constraintTop_toBottomOf="@+id/spinner"
+        app:layout_constraintVertical_bias="0.018" />
+
+
+    <Button
+        android:id="@+id/BtnEndTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="92dp"
+        android:background="@drawable/custom_button"
+        android:text="end time"
+        android:textColor="#feecea"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnstartTime"
+        app:layout_constraintVertical_bias="0.031" />
+
+    <Button
+        android:id="@+id/BtnCapture"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="156dp"
+        android:background="@drawable/custom_button"
+        android:text="Save entry"
+        android:textColor="#feecea"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.312"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnEndDate"
+        app:layout_constraintVertical_bias="0.224" />
+
+    <Button
+        android:id="@+id/btnEndDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="204dp"
+        android:background="@drawable/custom_button"
+        android:text="end date"
+        android:textColor="#feecea"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/BtnEndTime"
+        app:layout_constraintHorizontal_bias="0.558"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnStartDate"
+        app:layout_constraintVertical_bias="0.085" />
+
+    <ImageView
+        android:id="@+id/imImageWorkout"
+        android:layout_width="110dp"
+        android:layout_height="161dp"
+        app:layout_constraintBottom_toTopOf="@+id/btnTakePic"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.961"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <Button
+        android:id="@+id/btnTakePic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/custom_button2"
+        android:onClick="openCamera"
+        android:text="capture image"
+        android:textColor="#3e3530"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.976" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
