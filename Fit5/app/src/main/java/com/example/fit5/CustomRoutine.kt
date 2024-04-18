@@ -5,10 +5,12 @@ import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Base64
+import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Button
@@ -44,6 +46,7 @@ class CustomRoutine : AppCompatActivity() {
     var startTime: Date?=null
     var endDate: Date?=null
     var endTime:Date?=null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_custom_routine)
@@ -95,7 +98,8 @@ class CustomRoutine : AppCompatActivity() {
                 edDesc.error = "please enter a description"
                 return@setOnClickListener
             }
-            saveToFirebase(selectedItem,taskName,taskDesc,selectedItem)
+            saveToFirebase(selectedItem, taskName, taskDesc, selectedItem)
+
         }
 
 
@@ -112,10 +116,11 @@ class CustomRoutine : AppCompatActivity() {
             val imageBitmap = data?.extras?.get("data") as Bitmap
             // Display the image in ImageView
             imageViewPick.setImageBitmap(imageBitmap)
-            // Call save to Firebase method
+            //  Firebase method
             saveImageToFirebase(imageBitmap)
         }
     }
+
 
     private fun saveImageToFirebase(imageBitmap: Bitmap) {
         val outputStream = ByteArrayOutputStream()
@@ -130,6 +135,7 @@ class CustomRoutine : AppCompatActivity() {
         }
     }
 
+
     companion object {
         const val CAMERA_REQUEST_CODE = 100
     }//end of take image code
@@ -138,13 +144,24 @@ class CustomRoutine : AppCompatActivity() {
     //end time listener
     val endTimeListener = TimePickerDialog.OnTimeSetListener { _, hourOfDay:Int, minute:Int ->
         val selectedCalendar = Calendar.getInstance()
-        selectedCalendar.time = endDate!!
+
         selectedCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
         selectedCalendar.set(Calendar.MINUTE, minute)
         endTime = selectedCalendar.time
         val timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
         val selectedTimeString = timeFormat.format(endTime!!)
         endTimeBtn.text = selectedTimeString
+    }
+
+    val startTimeListener = TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
+        val selectedCalendar = Calendar.getInstance()
+
+        selectedCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
+        selectedCalendar.set(Calendar.MINUTE, minute)
+        startTime = selectedCalendar.time
+        val timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
+        val selectedTimeString = timeFormat.format(startTime!!)
+        startTimeBtn.text = selectedTimeString
     }
 
 
@@ -186,15 +203,7 @@ class CustomRoutine : AppCompatActivity() {
     }
 
 
-    val startTimeListener = TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
-        val selectedCalendar = Calendar.getInstance()
-        selectedCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
-        selectedCalendar.set(Calendar.MINUTE, minute)
-        startTime = selectedCalendar.time
-        val timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
-        val selectedTimeString = timeFormat.format(startTime!!)
-        startTimeBtn.text = selectedTimeString
-    }
+
 
     //end date
     val endDateListener = DatePickerDialog.OnDateSetListener { _: DatePicker,
@@ -232,7 +241,6 @@ class CustomRoutine : AppCompatActivity() {
         val totalTimeString = String.format(Locale.getDefault(),
             "%02d:%02d", totalHours,minutesRemaining)
 
-
         val key = database.child("items").push().key
         if (key != null){
             val task = TaskModel(
@@ -244,9 +252,15 @@ class CustomRoutine : AppCompatActivity() {
                 .addOnFailureListener {
                         err ->
                     Toast.makeText(this, "Error: ${err.message}", Toast.LENGTH_SHORT).show()
-                    }
-            }
-}
+                }
+        }
+
+
+    }
+
+
+
+
 }
 
 //class ends
@@ -258,5 +272,6 @@ data class TaskModel(
     var endDateString: String? = null,
     var endTimeString: String? = null,
     var totalTimeString: String? = null,
-    var categoryString: String?=null
+    var categoryString: String?=null,
+
 )

@@ -11,11 +11,7 @@
         android:label="@string/menu_home"
         tools:layout="@layout/fragment_home" />
 
-    <fragment
-        android:id="@+id/nav_gallery"
-        android:name="com.example.fit5.ui.gallery.GalleryFragment"
-        android:label="@string/progress_picture_library"
-        tools:layout="@layout/fragment_gallery" />
+
 
 
 
