@@ -38,6 +38,22 @@
 
     </TextView>
 
+    <TextView
+        android:id="@+id/tvUpcomingExerciseBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ExerciseName"
+        android:textSize="22sp"
+        android:textColor="@color/Accent"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/flProgressBarRest"
+        app:layout_constraintBottom_toTopOf="@id/tvUpcomingExerciseBack"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="HardcodedText">
+
+    </TextView>
+
 
 
     <FrameLayout
@@ -49,6 +65,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+
         app:layout_constraintTop_toBottomOf="@+id/toolBarExerciseBack">
 
         <ProgressBar
@@ -88,6 +105,8 @@
 
 
     </FrameLayout>
+
+
 
     <FrameLayout
         android:id="@+id/flExerciseBack"

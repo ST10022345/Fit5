@@ -39,6 +39,20 @@
 
     </TextView>
 
+    <TextView
+        android:id="@+id/tvUpcomingExerciseChest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ExerciseName"
+        android:textSize="22sp"
+        android:textColor="@color/Accent"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/flProgressBarRest"
+        app:layout_constraintBottom_toTopOf="@id/tvUpcomingExerciseChest"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="HardcodedText"/>
+
 
 
     <FrameLayout

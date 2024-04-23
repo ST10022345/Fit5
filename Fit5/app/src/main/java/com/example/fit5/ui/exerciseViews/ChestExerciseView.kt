@@ -44,6 +44,7 @@ class ChestExerciseView : AppCompatActivity() {
     private fun setupRestView(){
         binding?.flProgressBarRest?.visibility = View.VISIBLE
         binding?.tvTitle?.visibility = View.VISIBLE
+        binding?.tvUpcomingExerciseChest?.visibility = View.VISIBLE
         binding?.tvExercise?.visibility = View.INVISIBLE
         binding?.flExercise?.visibility = View.INVISIBLE
         binding?.ivImage?.visibility = View.INVISIBLE
@@ -53,12 +54,16 @@ class ChestExerciseView : AppCompatActivity() {
 
         }
 
+        //get next exercise name
+        binding?.tvUpcomingExerciseChest?.text = exerciseList!![currentExercisePosition +1].getName()
+
         setRestProgressBar()
     }
 
     private fun setupExerciseView(){
         binding?.flProgressBarRest?.visibility = View.INVISIBLE
         binding?.tvTitle?.visibility = View.INVISIBLE
+        binding?.tvUpcomingExerciseChest?.visibility = View.INVISIBLE
         binding?.tvExercise?.visibility = View.VISIBLE
         binding?.flExercise?.visibility = View.VISIBLE
         binding?.ivImage?.visibility = View.VISIBLE
@@ -76,7 +81,7 @@ class ChestExerciseView : AppCompatActivity() {
         restProgress = 0 // Reset progress to 0 before starting the timer
         binding?.progressBar?.progress = 0 // Set progress bar to 0 initially
 
-        restTimer = object : CountDownTimer(1000, 1000) {
+        restTimer = object : CountDownTimer(10000, 1000) {
             override fun onTick(millisUntilFinished: Long) {
                 restProgress++
                 binding?.progressBar?.progress = restProgress // Update progress bar with the current progress
@@ -94,7 +99,7 @@ class ChestExerciseView : AppCompatActivity() {
 
         binding?.progressBarExercise?.progress = exerciseProgress
 
-        exerciseTimer = object : CountDownTimer(3000, 1000) {
+        exerciseTimer = object : CountDownTimer(30000, 1000) {
             override fun onTick(millisUntilFinished: Long) {
                 exerciseProgress++
                 binding?.progressBarExercise?.progress = 30 - exerciseProgress // Update progress bar with the current progress

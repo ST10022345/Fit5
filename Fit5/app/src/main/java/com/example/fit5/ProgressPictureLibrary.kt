@@ -24,8 +24,6 @@ import java.util.UUID
 class ProgressPictureLibrary : AppCompatActivity() {
     lateinit var imageView1: ImageView
 
-
-
     lateinit var addImageBtn: Button
 
     //globals
@@ -41,7 +39,7 @@ class ProgressPictureLibrary : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_progress_picture_library)
-
+//check if user has images saved already
         if (userId != null) {
             val storageReference = FirebaseStorage.getInstance().getReference("images/$userId")
             storageReference.listAll().addOnSuccessListener { listResult ->
@@ -56,11 +54,18 @@ class ProgressPictureLibrary : AppCompatActivity() {
 
         imageView1 = findViewById(R.id.imageView1)
         addImageBtn = findViewById(R.id.AddImagebtn)
-
+//btn to add image
         addImageBtn.setOnClickListener {
-            selectImage()
+            if(getCurrentImageCount() == 10){
+                Toast.makeText(this, "you cannot add more then 10 images", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }else{
+                selectImage()
+            }
+            
         }
     }
+    //select image from gallery
     private fun selectImage() {
         val intent = Intent()
         intent.type = "image/*"
@@ -71,18 +76,21 @@ class ProgressPictureLibrary : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == PICK_IMG_REQUEST && resultCode == Activity.RESULT_OK && data != null && data.data != null) {
-
+            //check how many images a user has saved
             if (getCurrentImageCount() >= 10) {
-
+            //notify user can only have 10 images saved
                 Toast.makeText(this, "You can only add 10 images", Toast.LENGTH_SHORT).show()
                 return
             }
 
             filePath = data.data
             try {
+                //bitmap
                 val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, filePath)
                 imageView1.setImageBitmap(bitmap)
+                //save image to firebase
                 saveImageToFirebase(bitmap)
+                //prompts user to refresh page, refreshing the page will allow thier images to display
                 Toast.makeText(this, "refresh page", Toast.LENGTH_SHORT).show()
             } catch (e: IOException) {
                 e.printStackTrace()
@@ -93,19 +101,25 @@ class ProgressPictureLibrary : AppCompatActivity() {
 
                 Toast.makeText(this, "You can only add 10 images", Toast.LENGTH_SHORT).show()
                 return
+            }else{
+                val imageBitmap = data?.extras?.get("data") as Bitmap
+                //have the image display in the first ImageView
+                imageView1.setImageBitmap(imageBitmap)
+                saveImageToFirebase(imageBitmap)
             }
 
-            val imageBitmap = data?.extras?.get("data") as Bitmap
-            imageView1.setImageBitmap(imageBitmap)
 
-            saveImageToFirebase(imageBitmap)
+
 
         }
     }
 
+    //check current user image count
     private fun getCurrentImageCount(): Int {
         var count = 0
+
         for (i in 1..10) {
+
             val imageViewId = resources.getIdentifier("imageView$i", "id", packageName)
             val imageView = findViewById<ImageView>(imageViewId)
             if (imageView.drawable != null) {
@@ -114,15 +128,18 @@ class ProgressPictureLibrary : AppCompatActivity() {
         }
         return count
     }
-
+//save image to firebase
     private fun saveImageToFirebase(imageBitmap: Bitmap) {
         val baos = ByteArrayOutputStream()
         imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
         val data = baos.toByteArray()
-
+        //save image with a unique id and add the .jpg extention
         val imageName = UUID.randomUUID().toString() + ".jpg"
+    //get current user id
         val userId = firebaseUser?.uid
+
         if (userId != null) {
+            //within the image folder create a new storage folder named after the current users ID
             val imageRef = storageReference.child("images/$userId/${UUID.randomUUID()}.jpg")
 
             val uploadTask = imageRef.putBytes(data)
@@ -151,7 +168,7 @@ class ProgressPictureLibrary : AppCompatActivity() {
             // Access the storage reference for the user's images
             val storageReference = FirebaseStorage.getInstance().getReference("images/$userId")
 
-            // Get a list of all items (images) in the user's folder
+            // Get a list of all images in the user's folder
             storageReference.listAll().addOnSuccessListener { listResult ->
                 listResult.items.forEachIndexed { index, item ->
                     if (index < 10) {

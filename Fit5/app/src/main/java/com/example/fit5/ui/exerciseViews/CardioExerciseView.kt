@@ -43,6 +43,7 @@ class CardioExerciseView : AppCompatActivity() {
     private fun setupRestView(){
         binding?.flProgressBarRest?.visibility = View.VISIBLE
         binding?.tvTitleCardio?.visibility = View.VISIBLE
+        binding?.tvUpcomingExerciseCardio?.visibility = View.VISIBLE
         binding?.tvExerciseCardio?.visibility = View.INVISIBLE
         binding?.flExerciseCardio?.visibility = View.INVISIBLE
         binding?.ivImageCardio?.visibility = View.INVISIBLE
@@ -52,6 +53,9 @@ class CardioExerciseView : AppCompatActivity() {
 
         }
 
+        //get next exercise name
+        binding?.tvUpcomingExerciseCardio?.text = exerciseList!![currentExercisePosition +1].getName()
+
         setRestProgressBar()
     }
 
@@ -60,6 +64,7 @@ class CardioExerciseView : AppCompatActivity() {
         binding?.tvTitleCardio?.visibility = View.INVISIBLE
         binding?.tvExerciseCardio?.visibility = View.VISIBLE
         binding?.flExerciseCardio?.visibility = View.VISIBLE
+        binding?.tvUpcomingExerciseCardio?.visibility = View.INVISIBLE
         binding?.ivImageCardio?.visibility = View.VISIBLE
         if(exerciseTimer != null){
             exerciseTimer?.cancel()
@@ -75,7 +80,7 @@ class CardioExerciseView : AppCompatActivity() {
         restProgress = 0 // Reset progress to 0 before starting the timer
         binding?.progressBarCardio?.progress = 0 // Set progress bar to 0 initially
 
-        restTimer = object : CountDownTimer(1000, 1000) {
+        restTimer = object : CountDownTimer(10000, 1000) {
             override fun onTick(millisUntilFinished: Long) {
                 restProgress++
                 binding?.progressBarCardio?.progress = restProgress // Update progress bar with the current progress
@@ -93,7 +98,7 @@ class CardioExerciseView : AppCompatActivity() {
 
         binding?.progressBarExerciseCardio?.progress = exerciseProgress
 
-        exerciseTimer = object : CountDownTimer(3000, 1000) {
+        exerciseTimer = object : CountDownTimer(30000, 1000) {
             override fun onTick(millisUntilFinished: Long) {
                 exerciseProgress++
                 binding?.progressBarExerciseCardio?.progress = 30 - exerciseProgress // Update progress bar with the current progress
