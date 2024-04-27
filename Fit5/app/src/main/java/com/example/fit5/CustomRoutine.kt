@@ -43,8 +43,6 @@ class CustomRoutine : AppCompatActivity() {
     lateinit var customCategory : EditText
     lateinit var categories : ArrayList<String>
     lateinit var adapter : ArrayAdapter<String>
-
-
     lateinit var imageViewPick: ImageView
     lateinit var database: DatabaseReference
     //globals
@@ -59,7 +57,7 @@ class CustomRoutine : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_custom_routine)
-
+        //typecast
         edName = findViewById(R.id.editTextText)
         edDesc = findViewById(R.id.editTextText2)
         spinner = findViewById(R.id.spinner)
@@ -70,33 +68,59 @@ class CustomRoutine : AppCompatActivity() {
         myRoutinesbtn = findViewById(R.id.MyRoutinesbtn)
         customCategory = findViewById(R.id.edCategory)
         addCategoryBtn = findViewById(R.id.addCategoryBtn)
-
-
         imageViewPick = findViewById(R.id.imImageWorkout)
         takePicBtn = findViewById(R.id.btnTakePic)
 
         // populate the spinner
         categories = ArrayList()
+        //add 1 item to ensure all items have a category
+        categories.add("Core")
         adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, categories)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinner.adapter = adapter
 
+        //add the item to the spinner
         addCategoryBtn.setOnClickListener {
             val newCategory = customCategory.text.toString()
             if(newCategory.isNotEmpty() && !categories.contains(newCategory)){
                 categories.add(newCategory)
                 adapter.notifyDataSetChanged()
                 customCategory.text.clear()
+
             }else{
+                //ensure user enters a category
                 customCategory.error = "enter a new category"
 
             }
         }
 
         takePicBtn.setOnClickListener {
-            openCamera()
+            //error handling
+            val taskName = edName.text.toString().trim()
+            val taskDesc = edDesc.text.toString().trim()
+            val category = spinner.selectedItem.toString()
+
+            if (startDate == null || startTime == null || endDate == null || endTime == null) {
+                Toast.makeText(this, "Please select all dates and times", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            if (taskName.isEmpty() || taskDesc.isEmpty() || category.isEmpty() || startDate == null || startTime == null || endDate == null || endTime == null) {
+                Toast.makeText(this, "Please fill in all fields and select all dates and times", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+
+            try {
+                openCamera()
+            } catch (e: Exception) {
+                // Handle any exceptions that occur while opening the camera
+
+                Toast.makeText(this, "Error opening camera", Toast.LENGTH_SHORT).show()
+            }
         }
 
+        //navigate to view all list of times
         myRoutinesbtn.setOnClickListener {
             val  intent = Intent(this@CustomRoutine, DisplayRoutine::class.java)
             startActivity(intent)
@@ -107,7 +131,7 @@ class CustomRoutine : AppCompatActivity() {
 
 
 
-        // btn pull
+        // btn pull dates and times
         startDateBtn.setOnClickListener { showDate(startDateListener) }
         startTimeBtn.setOnClickListener { showTimePicker(startTimeListener) }
         endDateBtn.setOnClickListener { showDate(endDateListener) }
@@ -130,7 +154,7 @@ class CustomRoutine : AppCompatActivity() {
             val imageBitmap = data?.extras?.get("data") as Bitmap
             // Display the image in ImageView
             imageViewPick.setImageBitmap(imageBitmap)
-            //  Firebase method
+
             val selectedItem = spinner.selectedItem as String
             val taskName = edName.text.toString()
             val taskDesc = edDesc.text.toString()
@@ -148,19 +172,33 @@ class CustomRoutine : AppCompatActivity() {
         }
     }
 
+    //save everything to firebase
 
     private fun saveImageToFirebase(imageBitmap: Bitmap) {
         val outputStream = ByteArrayOutputStream()
         imageBitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
         val base64Image = Base64.encodeToString(outputStream.toByteArray(), Base64.DEFAULT)
 
+        //ensure user selects all dates and  times
         if (startDate == null || startTime == null || endDate == null || endTime == null) {
             Toast.makeText(this, "Please select all dates and times", Toast.LENGTH_SHORT).show()
             return
         }
 
+        // Ensure user enters a task name and description
+        val taskName = edName.text.toString().trim()
+        val taskDesc = edDesc.text.toString().trim()
+        if (taskName.isEmpty()) {
+            edName.error = "Please enter a name"
+            return
+        }
+        if (taskDesc.isEmpty()) {
+            edDesc.error = "Please enter a description"
+            return
+        }
 
-        //calcs optional
+
+        //calcs
         val totalTimeInMillis = endDate!!.time - startDate!!.time + endTime!!.time - startTime!!.time
         val totalMinutes = totalTimeInMillis / (1000*60)
         val totalHours = totalMinutes / 60
@@ -170,6 +208,7 @@ class CustomRoutine : AppCompatActivity() {
         //get current userId
         val userId = firebaseUser?.uid
 
+        //write to real time db
         val key = database.child("items").push().key
         if (key != null) {
             val task = TaskModel(
@@ -256,7 +295,7 @@ class CustomRoutine : AppCompatActivity() {
             timeSetListener,hour,minute,true)
         timePickerDialog.show()
     }
-    //format --> fb --> date --> date util
+    //start date
     val startDateListener = DatePickerDialog.OnDateSetListener { _:DatePicker, year:Int, month:Int, day:Int ->
         val selectedCalendar = Calendar.getInstance()
         selectedCalendar.set(year,month,day)
