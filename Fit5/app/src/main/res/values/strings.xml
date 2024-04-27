@@ -26,4 +26,12 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="progress_picture_library">Progress Picture Library</string>
     <string name="about">About</string>
+    <string name="start_date">start date</string>
+    <string name="my_routines">My Routines</string>
+    <string name="capture_image">capture image</string>
+    <string name="start_time">start time</string>
+    <string name="end_date">end date</string>
+    <string name="end_time">end time</string>
+    <string name="routine_description">Routine description</string>
+    <string name="exercise_name">Exercise name</string>
 </resources>

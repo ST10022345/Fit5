@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string-array name="spinner_items">
-        <item> Legs</item>
-        <item> Core</item>
-        <item> full body</item>
-    </string-array>
-</resources>

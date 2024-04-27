@@ -19,6 +19,7 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Spinner
 import android.widget.Toast
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import java.io.ByteArrayOutputStream
@@ -30,7 +31,7 @@ import java.util.Locale
 class CustomRoutine : AppCompatActivity() {
     //variables
     lateinit var spinner : Spinner
-    lateinit var capButton : Button
+    lateinit var addCategoryBtn : Button
     lateinit var edName: EditText
     lateinit var edDesc: EditText
     lateinit var startDateBtn: Button
@@ -38,6 +39,11 @@ class CustomRoutine : AppCompatActivity() {
     lateinit var endDateBtn: Button
     lateinit var endTimeBtn:Button
     lateinit var takePicBtn:Button
+    lateinit var myRoutinesbtn: Button
+    lateinit var customCategory : EditText
+    lateinit var categories : ArrayList<String>
+    lateinit var adapter : ArrayAdapter<String>
+
 
     lateinit var imageViewPick: ImageView
     lateinit var database: DatabaseReference
@@ -46,6 +52,9 @@ class CustomRoutine : AppCompatActivity() {
     var startTime: Date?=null
     var endDate: Date?=null
     var endTime:Date?=null
+    val firebaseAuth = FirebaseAuth.getInstance()
+    val firebaseUser = firebaseAuth.currentUser
+    val userId = firebaseUser?.uid
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,54 +67,59 @@ class CustomRoutine : AppCompatActivity() {
         startTimeBtn = findViewById(R.id.btnstartTime)
         endDateBtn = findViewById(R.id.btnEndDate)
         endTimeBtn = findViewById(R.id.BtnEndTime)
-        capButton = findViewById(R.id.BtnCapture)
+        myRoutinesbtn = findViewById(R.id.MyRoutinesbtn)
+        customCategory = findViewById(R.id.edCategory)
+        addCategoryBtn = findViewById(R.id.addCategoryBtn)
+
 
         imageViewPick = findViewById(R.id.imImageWorkout)
         takePicBtn = findViewById(R.id.btnTakePic)
+
+        // populate the spinner
+        categories = ArrayList()
+        adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, categories)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spinner.adapter = adapter
+
+        addCategoryBtn.setOnClickListener {
+            val newCategory = customCategory.text.toString()
+            if(newCategory.isNotEmpty() && !categories.contains(newCategory)){
+                categories.add(newCategory)
+                adapter.notifyDataSetChanged()
+                customCategory.text.clear()
+            }else{
+                customCategory.error = "enter a new category"
+
+            }
+        }
 
         takePicBtn.setOnClickListener {
             openCamera()
         }
 
+        myRoutinesbtn.setOnClickListener {
+            val  intent = Intent(this@CustomRoutine, DisplayRoutine::class.java)
+            startActivity(intent)
+        }
+
         database = FirebaseDatabase.getInstance().reference
         startTime = Calendar.getInstance().time
 
-        //spinner
-        val spinnerAdapter = ArrayAdapter.createFromResource(
-            this,
-            R.array.spinner_items,
-            android.R.layout.simple_spinner_dropdown_item
-        )
-        spinner.adapter = spinnerAdapter
+
+
         // btn pull
         startDateBtn.setOnClickListener { showDate(startDateListener) }
         startTimeBtn.setOnClickListener { showTimePicker(startTimeListener) }
         endDateBtn.setOnClickListener { showDate(endDateListener) }
         endTimeBtn.setOnClickListener { showTimePicker(endTimeListener) }
 
-        //firebase
-        capButton.setOnClickListener {
-            val selectedItem = spinner.selectedItem as String
-            val taskName = edName.text.toString()
-            val taskDesc = edDesc.text.toString()
 
-            if(taskName.isEmpty()){
-                edName.error = "Please enter a name"
-                return@setOnClickListener
-
-            }
-            if (taskDesc.isEmpty()){
-                edDesc.error = "please enter a description"
-                return@setOnClickListener
-            }
-            saveToFirebase(selectedItem, taskName, taskDesc, selectedItem)
-
-        }
 
 
     }
 //take image code
     private fun openCamera() {
+
         val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         startActivityForResult(cameraIntent, CAMERA_REQUEST_CODE)
     }
@@ -117,6 +131,19 @@ class CustomRoutine : AppCompatActivity() {
             // Display the image in ImageView
             imageViewPick.setImageBitmap(imageBitmap)
             //  Firebase method
+            val selectedItem = spinner.selectedItem as String
+            val taskName = edName.text.toString()
+            val taskDesc = edDesc.text.toString()
+
+            if(taskName.isEmpty()){
+                edName.error = "Please enter a name"
+                return
+
+            }
+            if (taskDesc.isEmpty()){
+                edDesc.error = "please enter a description"
+                return
+            }
             saveImageToFirebase(imageBitmap)
         }
     }
@@ -126,12 +153,51 @@ class CustomRoutine : AppCompatActivity() {
         val outputStream = ByteArrayOutputStream()
         imageBitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
         val base64Image = Base64.encodeToString(outputStream.toByteArray(), Base64.DEFAULT)
-        // Firebase
-        val databaseReference = FirebaseDatabase.getInstance().getReference("images")
-        val imgId = databaseReference.push().key
-        // Subfolder
-        if (imgId != null) {
-            databaseReference.child(imgId).setValue(base64Image)
+
+        if (startDate == null || startTime == null || endDate == null || endTime == null) {
+            Toast.makeText(this, "Please select all dates and times", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+
+        //calcs optional
+        val totalTimeInMillis = endDate!!.time - startDate!!.time + endTime!!.time - startTime!!.time
+        val totalMinutes = totalTimeInMillis / (1000*60)
+        val totalHours = totalMinutes / 60
+        val minutesRemaining = totalMinutes % 60
+        val totalTimeString = String.format(Locale.getDefault(),
+            "%02d:%02d", totalHours,minutesRemaining)
+        //get current userId
+        val userId = firebaseUser?.uid
+
+        val key = database.child("items").push().key
+        if (key != null) {
+            val task = TaskModel(
+                taskName = edName.text.toString(),
+                taskDesc = edDesc.text.toString(),
+                startDateString = startDateBtn.text.toString(),
+                startTimeString = startTimeBtn.text.toString(),
+                endDateString = endDateBtn.text.toString(),
+                endTimeString = endTimeBtn.text.toString(),
+                totalTimeString = totalTimeString,
+                categoryString = spinner.selectedItem.toString(),
+                imageString = base64Image,
+                userID = userId
+
+            )
+
+
+
+
+                database.child("items").child(key).setValue(task)
+                    .addOnSuccessListener {
+                        Toast.makeText(this, "Workout Routine saved", Toast.LENGTH_SHORT).show()
+                    }
+                    .addOnFailureListener { err ->
+                        Toast.makeText(this, "Error: ${err.message}", Toast.LENGTH_SHORT).show()
+                    }
+
+
         }
     }
 
@@ -216,47 +282,7 @@ class CustomRoutine : AppCompatActivity() {
         endDateBtn.text = selectedDateString
     }
     //method for firebase
-    fun saveToFirebase(item:String, taskName: String,taskDesc: String,categoryString: String){
-        //format
-        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-        val timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
-        //fetch the values from the local btns text
-        val startDateString = startDateBtn.text.toString()
-        val startTimeString = startTimeBtn.text.toString()
-        val endDateString = endDateBtn.text.toString()
-        val endTimeString = endTimeBtn.text.toString()
-        val categoryString = spinner.selectedItem.toString()
-        //parse values for firebase
-        val startDate = dateFormat.parse(startDateString)
-        val startTime = timeFormat.parse(startTimeString)
-        val endDate = dateFormat.parse(endDateString)
-        val endTime = timeFormat.parse(endTimeString)
 
-
-        //calcs optional
-        val totalTimeInMillis = endDate.time - startDate.time + endTime.time - startTime.time
-        val totalMinutes = totalTimeInMillis / (1000*60)
-        val totalHours = totalMinutes / 60
-        val minutesRemaining = totalMinutes % 60
-        val totalTimeString = String.format(Locale.getDefault(),
-            "%02d:%02d", totalHours,minutesRemaining)
-
-        val key = database.child("items").push().key
-        if (key != null){
-            val task = TaskModel(
-                taskName,taskDesc,startDateString,startTimeString,endDateString,endTimeString,totalTimeString,categoryString)
-            database.child("items").child(key).setValue(task)
-                .addOnSuccessListener {
-                    Toast.makeText(this, "Workout Routine saved", Toast.LENGTH_SHORT).show()
-                }
-                .addOnFailureListener {
-                        err ->
-                    Toast.makeText(this, "Error: ${err.message}", Toast.LENGTH_SHORT).show()
-                }
-        }
-
-
-    }
 
 
 
@@ -265,6 +291,7 @@ class CustomRoutine : AppCompatActivity() {
 
 //class ends
 data class TaskModel(
+    var taskId: String? = null,
     var taskName: String? = null,
     var taskDesc: String? = null,
     var startDateString: String? = null,
@@ -273,5 +300,6 @@ data class TaskModel(
     var endTimeString: String? = null,
     var totalTimeString: String? = null,
     var categoryString: String?=null,
-
+    var imageString: String? = null,
+    var userID: String? = null
 )
